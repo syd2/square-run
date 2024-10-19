@@ -38,6 +38,15 @@ public class player_movement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        // Ground check
+        isGrounded = Physics2D.OverlapCircle(feetpos.position, checkRadius, whatisGround);
+        if (isGrounded)
+        {
+            extrajump = extrajumpValue;
+        }
+
+        //fight physics
         fight_camera();
         if (player.position.x  >= room_door && player.position.x < room_out && boss != null)
         {
@@ -87,22 +96,24 @@ public class player_movement : MonoBehaviour
             rb.velocity = new Vector2(7 , rb.velocity.y);
         }
     }
-    private void OnGUI()//jumping
-    {
-        isGrounded = Physics2D.OverlapCircle(feetpos.position, checkRadius, whatisGround);
-        if (isGrounded)
-        {
-            extrajump = extrajumpValue;//reset extrajumpvalue when we are on the ground;
-        }
 
-        if(GUI.Button(new Rect(Screen.width - 220, Screen.height - 220, 200, 180), jump))
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(Screen.width - 220, Screen.height - 220, 200, 180), jump))
         {
-            if (isGrounded == true && extrajump > 0)
-            {
-                rb.velocity = Vector2.up * jumpCount;//jumping
-            }    
+            Jump();
         }
     }
+
+    private void Jump()
+    {
+        if (isGrounded || extrajump > 0)
+        {
+            rb.velocity = Vector2.up * jumpCount;
+            extrajump--;
+        }
+    }
+
     private void fight_camera()
     {
         if (player.position.x  >= room_door && player.position.x < room_out && boss != null)
