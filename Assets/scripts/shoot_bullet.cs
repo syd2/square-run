@@ -15,7 +15,7 @@ public class shoot_bullet : MonoBehaviour
     }
     private void OnGUI()
     {
-        if(GUI.Button(new Rect(20,Screen.height - 220, 200, 180), bao))
+        if(GUI.Button(new Rect(80,Screen.height - 350, 300, 270), bao))
         {
             shoot_sounds.Play();//play sound
             shoot();

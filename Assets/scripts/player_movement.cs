@@ -24,14 +24,16 @@ public class player_movement : MonoBehaviour
     public boos_health boss_health;
     public GameObject boss;
     public float speed1 = 4;
-    public float speed2 = 10;
+    public float speed2 = 18;
     public GameObject gun_point;
     private bool facing_right = true;
     private bool face_right = true;
+    private Rect shootButtonRect; 
     private void Start()
     {
         extrajump = extrajumpValue;//setting extrajump value equals to extrajump.
         //gun_point = GetComponent<firepoint>();
+        shootButtonRect = new Rect(20, Screen.height - 220, 200, 180); 
     }
 
 
@@ -96,14 +98,29 @@ public class player_movement : MonoBehaviour
             rb.velocity = new Vector2(7 , rb.velocity.y);
         }
     }
-
-    private void OnGUI()
+    private void Update()
     {
-        if (GUI.Button(new Rect(Screen.width - 220, Screen.height - 220, 200, 180), jump))
+    
+        // Handle touch input
+        if (Input.touchCount > 0)
         {
-            Jump();
+            Touch touch = Input.GetTouch(0);
+
+            // If the touch is not within the shoot button area, process jump
+            if (!shootButtonRect.Contains(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                Jump();
+            }
         }
     }
+
+    // private void OnGUI()
+    // {
+    //     if (GUI.Button(new Rect(Screen.width - 220, Screen.height - 220, 200, 180), jump))
+    //     {
+    //         Jump();
+    //     }
+    // }
 
     private void Jump()
     {
